@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+</head>
+<body>
+
+<p>
+    <a href="/blogs">List Blogs</a>
+</p>
+<!--<th:block th:if="${message}">-->
+<!--    <p th:text="${message}"></p>-->
+<!--</th:block>-->
+<div class="container">
+    <h2>Create new blog</h2>
+    <form th:action="@{/create-blog}" th:object="${blog}" method="post">
+        <div class="form-group">
+            <label for="tittle">Tittle:</label>
+            <input type="text" id="tittle" th:field="*{title}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select id="category" class="form-control" th:field="*{category_id}">
+                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <textarea name="editor"></textarea>
+            <script>
+                CKEDITOR.replace('editor');
+            </script>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" class="form-control" th:field="*{status}">
+                <option th:value="Published" th:text="Publish"></option>
+                <option th:value="Draft" th:text="Draft"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+</body>
+</html>
