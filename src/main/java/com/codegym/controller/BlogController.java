@@ -15,7 +15,7 @@ import java.io.*;
 
 @Controller
 public class BlogController {
-    public static final String CONTENT_SOURCE = "E:\\CodeGym\\SpringMVC\\SpringBlog\\src\\main\\webapp";
+
     @Autowired
     private BlogService blogService;
 
@@ -45,18 +45,12 @@ public class BlogController {
     @PostMapping("/create-blog")
     public ModelAndView createBlog(@ModelAttribute("blog") Blog blog,@RequestParam("content-html") String content) throws IOException {
         String content_id = blog.getTitle().replaceAll("\\s+","-").toLowerCase();
-
         blog.setContent_id(content_id);
+
         blogService.save(blog);
+        blogService.saveContent(content_id, content);
 
-        File file = new File(CONTENT_SOURCE + "\\WEB-INF\\content\\"+content_id+".txt");
-
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-        bufferedWriter.write(content);
-        bufferedWriter.close();
-
-        ModelAndView modelAndView = new ModelAndView("/blog/test");
-        modelAndView.addObject("content",content);
+        ModelAndView modelAndView = new ModelAndView("redirect:/blogs");
         return modelAndView;
     }
 
@@ -69,16 +63,51 @@ public class BlogController {
            modelAndView.addObject("blog",blog);
 
            String content_id = blog.getContent_id();
-           String content = "";
-           File file = new File(CONTENT_SOURCE + "\\WEB-INF\\content\\"+content_id+".txt");
-           BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-
-           String text;
-           while ((text = bufferedReader.readLine()) != null){
-               content += text;
-           }
+           String content = blogService.getContent(content_id);
 
            modelAndView.addObject("content",content);
+        } else {
+            modelAndView = new ModelAndView("/error.404");
+        }
+        return modelAndView;
+    }
+
+    @GetMapping("/edit-blog/{id}")
+    public ModelAndView showEditForm(@PathVariable Long id) throws IOException {
+        ModelAndView modelAndView;
+        Blog blog = blogService.findById(id);
+        if(blog != null){
+            modelAndView = new ModelAndView("/blog/edit");
+            modelAndView.addObject("blog",blog);
+
+            String content_id = blog.getContent_id();
+            String content = blogService.getContent(content_id);
+
+            modelAndView.addObject("content",content);
+        } else {
+            modelAndView = new ModelAndView("/error.404");
+        }
+        return modelAndView;
+    }
+
+    @PostMapping("/edit-blog")
+    public ModelAndView editBlog(@ModelAttribute("blog") Blog blog, @RequestParam("content-html") String content) throws IOException {
+        String content_id = blogService.findById(blog.getId()).getContent_id();
+        blog.setContent_id(content_id);
+
+        blogService.save(blog);
+        blogService.saveContent(content_id,content);
+
+        return new ModelAndView("redirect:/blogs");
+    }
+
+    @GetMapping("/delete-blog/{id}")
+    public ModelAndView deleteBlog(@PathVariable Long id){
+        Blog blog = blogService.findById(id);
+        ModelAndView modelAndView;
+        if(blog != null){
+            blogService.remove(blog.getId());
+            modelAndView = new ModelAndView("redirect:/blogs");
         } else {
             modelAndView = new ModelAndView("/error.404");
         }

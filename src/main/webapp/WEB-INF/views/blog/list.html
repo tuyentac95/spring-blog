@@ -33,7 +33,7 @@
             <td th:text="${blog.status}"></td>
             <td><a th:href="@{/view-blog/__${blog.id}__}" class="btn btn-success" role="button">View</a></td>
             <td><a th:href="@{/edit-blog/__${blog.id}__}" class="btn btn-success" role="button">Edit</a></td>
-            <td><a th:href="@{/delete-blog/__${blog.id}__}" class="btn btn-success" role="button">Delete</a></td>
+            <td><a th:href="@{/delete-blog/__${blog.id}__}" class="btn btn-success" role="button" onclick="return confirm('Are you sure?')">Delete</a></td>
         </tr>
     </th:block>
     </tbody>

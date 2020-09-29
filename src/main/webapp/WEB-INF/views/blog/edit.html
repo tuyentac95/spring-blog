@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create new blog</title>
+    <title>Edit blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -16,16 +16,20 @@
     <a href="/blogs">List Blogs</a>
 </p>
 <div class="container">
-    <h2>Create new blog</h2>
-    <form th:action="@{/create-blog}" th:object="${blog}" method="post">
+    <h2>Edit blog</h2>
+    <form th:action="@{/edit-blog}" th:object="${blog}" method="post">
+        <input type="hidden" th:field="*{id}">
         <div class="form-group">
             <label for="tittle">Tittle:</label>
             <input type="text" id="tittle" th:field="*{title}" class="form-control"/>
         </div>
         <div class="form-group">
             <label for="category">Category:</label>
-            <select id="category" class="form-control" th:field="*{category_id}">
-                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+            <select id="category" class="form-control" name="category_id">
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.name}"
+                        th:selected="(${c.id} == *{category_id.id})"></option>
             </select>
         </div>
         <div class="form-group">
@@ -33,21 +37,25 @@
             <input type="text" id="description" th:field="*{description}" class="form-control"/>
         </div>
         <div class="form-group">
-            <textarea name="editor"></textarea>
+            <textarea name="editor" th:text="${content}"></textarea>
             <div id="editor-content"></div>
             <script>
                 let editor = CKEDITOR.replace('editor');
                 editor.on('change',function (event){
-                    let content = event.editor.getData();
-                    document.getElementById("editor-content").innerHTML = "<input type='text' name='content-html' value='"+content+"'/>";
+                    let new_content = event.editor.getData();
+                    document.getElementById("editor-content").innerHTML = "<input type='text' name='content-html' value='"+new_content+"'/>";
                 });
             </script>
         </div>
         <div class="form-group">
             <label for="status">Status:</label>
             <select id="status" class="form-control" th:field="*{status}">
-                <option th:value="Published" th:text="Publish"></option>
-                <option th:value="Draft" th:text="Draft"></option>
+                <option th:value="Published"
+                        th:text="Publish"
+                        th:selected="(*{status} == ${'Published'})"></option>
+                <option th:value="Draft"
+                        th:text="Draft"
+                        th:selected="(*{status} == ${'Draft'})"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
