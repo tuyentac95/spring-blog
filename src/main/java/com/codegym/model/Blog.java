@@ -1,6 +1,7 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "blogs")
@@ -88,4 +89,5 @@ public class Blog {
                 ", status='" + status + '\'' +
                 '}';
     }
+
 }

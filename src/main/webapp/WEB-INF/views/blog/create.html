@@ -37,8 +37,13 @@
         </div>
         <div class="form-group">
             <textarea name="editor"></textarea>
+            <div id="editor-content"></div>
             <script>
-                CKEDITOR.replace('editor');
+                let editor = CKEDITOR.replace('editor');
+                editor.on('change',function (event){
+                    let content = event.editor.getData();
+                    document.getElementById("editor-content").innerHTML = "<input type='text' name='content-html' value='"+content+"'/>";
+                });
             </script>
         </div>
         <div class="form-group">

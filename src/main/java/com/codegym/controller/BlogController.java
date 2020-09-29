@@ -10,7 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.*;
 
 @Controller
 public class BlogController {
@@ -37,6 +41,25 @@ public class BlogController {
     public ModelAndView showCreateForm(){
         ModelAndView modelAndView = new ModelAndView("/blog/create");
         modelAndView.addObject("blog",new Blog());
+        return modelAndView;
+    }
+
+    @PostMapping("/create-blog")
+    public ModelAndView testInput(@ModelAttribute("blog") Blog blog,@RequestParam("content-html") String content) throws IOException {
+        String content_id = blog.getTitle().replaceAll("\\s+","-").toLowerCase();
+
+        blog.setContent_id(content_id);
+        blogService.save(blog);
+
+        File file = new File("WEB-INF\\content\\test.txt");
+
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+        bufferedWriter.write(content);
+        bufferedWriter.close();
+
+
+        ModelAndView modelAndView = new ModelAndView("/blog/test");
+        modelAndView.addObject("content",content);
         return modelAndView;
     }
 }
