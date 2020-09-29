@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${blog.title}"></title>
+</head>
+<body>
+<h1 th:text="${blog.title}"></h1>
+<p>Category:<span th:text="${blog.category_id.name}"></span></p>
+<i th:text="${blog.description}"></i>
+<div id="show-content"></div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    let content = [[${content}]];
+    document.getElementById("show-content").innerHTML = content;
+
+    /*]]>*/
+</script>
+</body>
+</html>
