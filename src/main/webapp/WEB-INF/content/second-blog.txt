@@ -1,1 +1,1 @@
-<h3><strong>Welcome back!</strong></h3><hr /><p>Hello! This is my second blog.</p><p><img alt="" src="https://www.irvinestandard.com/images/2020/09/irvine-parks-1600x960-1-1024x614.jpg" style="height:307px; width:512px" /></p><p>Today the weather is great!</p>
+<h3><strong>Welcome back!</strong></h3><hr /><p>Hello! This is my second blog.</p><p><img alt="" src="https://www.irvinestandard.com/images/2020/09/irvine-parks-1600x960-1-1024x614.jpg" style="height:307px; width:512px" /></p><p>Today the weather is great!</p><p>Hello</p>

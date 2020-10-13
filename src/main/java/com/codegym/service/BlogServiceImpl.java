@@ -58,9 +58,12 @@ public class BlogServiceImpl implements BlogService{
         while ((text = bufferedReader.readLine()) != null){
             content += text;
         }
-
         return content;
     }
 
+    @Override
+    public Page<Blog> findPublish(Pageable pageable) {
+        return blogRepository.findAllByStatusEquals("Published", pageable);
+    }
 
 }

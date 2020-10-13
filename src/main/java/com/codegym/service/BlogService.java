@@ -18,4 +18,6 @@ public interface BlogService {
     void saveContent(String content_id, String content) throws IOException;
 
     String getContent(String content_id) throws IOException;
+
+    Page<Blog> findPublish(Pageable pageable);
 }

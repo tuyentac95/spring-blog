@@ -27,6 +27,15 @@ public class BlogController {
         return categoryService.findAll();
     }
 
+    @GetMapping("/")
+    public ModelAndView index(Pageable pageable){
+        ModelAndView modelAndView = new ModelAndView("/index");
+        Page<Blog> publishedBlogs = blogService.findPublish(pageable);
+        modelAndView.addObject("publishedBlog",publishedBlogs);
+
+        return modelAndView;
+    }
+
     @GetMapping("/blogs")
     public ModelAndView listBlogs(Pageable pageable){
         Page<Blog> blogs = blogService.findAll(pageable);
